@@ -25,7 +25,11 @@ router.post(
         } else {
           images = req.body.images;
         }
-      
+        // Validate other data fields here
+        const { name, description, category, originalPrice, discountPrice, stock } = req.body;
+        if (!name || !description || !category || !originalPrice || !discountPrice || !stock || !images) {
+        return next(new ErrorHandler("Invalid product data. Please provide all required fields.", 400));
+      }
         const imagesLinks = [];
       
         for (let i = 0; i < images.length; i++) {
@@ -39,8 +43,7 @@ router.post(
           });
         }
       
-        const productData = req.body;
-        productData.images = imagesLinks;
+        const productData = { ...req.body, images: imagesLinks };
         productData.shop = shop;
 
         const product = await Product.create(productData);
@@ -51,6 +54,8 @@ router.post(
         });
       }
     } catch (error) {
+      // Handle errors appropriately
+      console.error("Error creating product:", error);
       return next(new ErrorHandler(error, 400));
     }
   })
