@@ -72,33 +72,43 @@ router.get(
     }
   })
 );
-
-// delete product of a shop
+//delete products from shop
 router.delete(
   "/delete-shop-product/:id",
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const product = await Product.findById(req.params.id);
+      const productId = req.params.id;
+      console.log('Product ID:', productId); // Debugging statement
+
+      const product = await Product.findByIdAndDelete(productId);
 
       if (!product) {
-        return next(new ErrorHandler("Product is not found with this id", 404));
-      }    
+        return next(new ErrorHandler("Product not found with this id", 404));
+      }
 
-      for (let i = 0; 1 < product.images.length; i++) {
+      for (let i = 0; i < product.images.length; i++) {
         const result = await cloudinary.v2.uploader.destroy(
           product.images[i].public_id
         );
+        console.log("Image deleted from cloudinary:", result);
       }
-    
+
+      if (typeof product.remove !== 'function') {
+        return next(new ErrorHandler("Cannot delete product. Remove method not available.", 500));
+      }
+
       await product.remove();
 
-      res.status(201).json({
+      console.log("Product deleted from database:", productId);
+
+      res.status(200).json({
         success: true,
-        message: "Product Deleted successfully!",
+        message: "Product deleted successfully!",
       });
     } catch (error) {
-      return next(new ErrorHandler(error, 400));
+      console.error("Error deleting product:", error);
+      return next(new ErrorHandler("Error deleting product", 500));
     }
   })
 );
