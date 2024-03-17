@@ -57,6 +57,13 @@ const Header = ({ activeHeading }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 70) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  });
 
   return (
     <>
