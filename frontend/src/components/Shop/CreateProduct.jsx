@@ -11,7 +11,7 @@ const CreateProduct = () => {
   const { success, error } = useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+                                                                                                                 
   const [images, setImages] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -27,7 +27,7 @@ const CreateProduct = () => {
     }
     if (success) {
       toast.success("Product created successfully!");
-      navigate("/dashboard");
+      // navigate("/dashboard");
       window.location.reload();
     }
   }, [dispatch, error, success]);
