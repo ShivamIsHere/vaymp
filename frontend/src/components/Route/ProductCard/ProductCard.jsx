@@ -26,6 +26,8 @@ const ProductCard = ({ data,isEvent }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const remainingItems = data?.stock < 5 && data?.stock > 0 ? data?.stock + " item left" : "";
+
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
@@ -94,6 +96,7 @@ const ProductCard = ({ data,isEvent }) => {
               <h4 className={`${styles.price}`}>
                 {data.originalPrice ? data.originalPrice + " $" : null}
               </h4>
+              <h5>{remainingItems}</h5>
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">
               {data?.sold_out} sold

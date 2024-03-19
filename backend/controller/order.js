@@ -130,6 +130,7 @@ router.put(
         product.stock -= qty;
         product.sold_out += qty;
 
+
         await product.save({ validateBeforeSave: false });
       }
 
@@ -233,5 +234,37 @@ router.get(
     }
   })
 );
+// // Update product stock by admin
+// router.put(
+//   "/update-product-stock/:id",
+//   isAdmin("Admin"),
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const productId = req.params.id;
+//       const newStock = req.body.stock; // Assuming the request body contains the new stock value
+
+//       // Find the product by ID
+//       const product = await Product.findById(productId);
+
+//       if (!product) {
+//         return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
+//       }
+
+//       // Update the product's stock
+//       product.stock = newStock;
+
+//       // Save the updated product
+//       await product.save();
+
+//       res.status(200).json({
+//         success: true,
+//         message: "Product stock updated successfully!",
+//         product,
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   })
+// );
 
 module.exports = router;
