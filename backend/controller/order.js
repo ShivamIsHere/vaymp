@@ -6,15 +6,15 @@ const { isAuthenticated, isSeller, isAdmin } = require("../middleware/auth");
 const Order = require("../model/order");
 const Shop = require("../model/shop");
 const Product = require("../model/product");
-
-// create new order
+const axios = require("axios");
+// Create new order
 router.post(
   "/create-order",
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { cart, shippingAddress, user, totalPrice, paymentInfo } = req.body;
 
-      //   group cart items by shopId
+      // Group cart items by shopId
       const shopItemsMap = new Map();
 
       for (const item of cart) {
@@ -25,7 +25,7 @@ router.post(
         shopItemsMap.get(shopId).push(item);
       }
 
-      // create an order for each shop
+      // Create an order for each shop
       const orders = [];
 
       for (const [shopId, items] of shopItemsMap) {
@@ -37,6 +37,11 @@ router.post(
           paymentInfo,
         });
         orders.push(order);
+
+        // Update stock for each item in the shop's cart
+        for (const item of items) {
+          await updateStockAfterOrderCreation(item);
+        }
       }
 
       res.status(201).json({
@@ -48,6 +53,112 @@ router.post(
     }
   })
 );
+
+
+
+// Update stock for a single product
+router.put(
+  "/update-stock/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const { stock } = req.body; // New stock value from the request body
+
+      // Find the product by ID in the database
+      const product = await Product.findById(productId);
+
+      // Check if the product exists
+      if (!product) {
+        return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
+      }
+
+      // Update the product's stock
+      product.stock = stock;
+
+      // Save the updated product
+      await product.save();
+
+      // Send success response
+      res.status(200).json({
+        success: true,
+        message: "Product stock updated successfully",
+        product,
+      });
+    } catch (error) {
+      // Handle errors appropriately
+      console.error("Error updating product stock:", error);
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
+// Function to update stock using Axios after creating orders
+async function updateStockAfterOrderCreation(item) {
+  console.log("Updating stock for item:", item);
+  const productId = item._id; // Use _id for Product ID
+  const quantity = item.qty;
+
+  console.log("Product ID:", productId);
+  console.log("Quantity:", quantity);
+
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new Error(`Product not found with ID: ${productId}`);
+  }
+
+  // Update the product's stock
+  product.stock -= quantity;
+  console.log("Updated stock:", product.stock);
+
+  try {
+    // Make HTTP PUT request to update stock using Axios
+    const response = await axios.put(`http://localhost:8000/api/v2/order/update-stock/${productId}`, {
+      stock: product.stock, // Update the stock value in the request body
+    });
+
+    // Log the response data received from the server
+    console.log("Response from server:", response.data);
+
+    // Check if the request was successful
+    if (response.status >= 200 && response.status < 300) {
+      console.log("Stock updated successfully");
+    } else {
+      throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
+    }
+  } catch (error) {
+    // Handle Axios errors
+    console.error("Error updating stock:", error.message);
+    throw new Error("Failed to update stock");
+  }
+
+  // Save the updated product
+  await product.save();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // get all orders of user
 router.get(
@@ -100,6 +211,7 @@ router.put(
       if (!order) {
         return next(new ErrorHandler("Order not found with this id", 400));
       }
+      console.log(req.body.status)
       if (req.body.status === "Transferred to delivery partner") {
         order.cart.forEach(async (o) => {
           await updateOrder(o._id, o.qty);
@@ -234,7 +346,7 @@ router.get(
     }
   })
 );
-// // Update product stock by admin
+// Update product stock by admin
 // router.put(
 //   "/update-product-stock/:id",
 //   isAdmin("Admin"),
@@ -268,3 +380,6 @@ router.get(
 // );
 
 module.exports = router;
+
+
+
