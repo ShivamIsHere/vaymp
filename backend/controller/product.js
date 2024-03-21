@@ -211,4 +211,46 @@ router.get(
     }
   })
 );
+
+
+
+// Update stock for a single product
+router.put(
+  "/update-stock/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const { stock,sold_out } = req.body; // New stock value from the request body
+
+
+      // Find the product by ID in the database
+      const product = await Product.findById(productId);
+
+      // Check if the product exists
+      if (!product) {
+        return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
+      }
+
+      // Update the product's stock
+      product.stock = stock;
+      product.sold_out=sold_out
+
+      // Save the updated product
+      await product.save();
+
+      // Send success response
+      res.status(200).json({
+        success: true,
+        message: "Product stock updated successfully",
+        product,
+      });
+    } catch (error) {
+      // Handle errors appropriately
+      console.error("Error updating product stock:", error);
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
 module.exports = router;

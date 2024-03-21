@@ -56,48 +56,13 @@ router.post(
 
 
 
-// Update stock for a single product
-router.put(
-  "/update-stock/:id",
-  catchAsyncErrors(async (req, res, next) => {
-    try {
-      const productId = req.params.id;
-      const { stock } = req.body; // New stock value from the request body
-
-      // Find the product by ID in the database
-      const product = await Product.findById(productId);
-
-      // Check if the product exists
-      if (!product) {
-        return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
-      }
-
-      // Update the product's stock
-      product.stock = stock;
-
-      // Save the updated product
-      await product.save();
-
-      // Send success response
-      res.status(200).json({
-        success: true,
-        message: "Product stock updated successfully",
-        product,
-      });
-    } catch (error) {
-      // Handle errors appropriately
-      console.error("Error updating product stock:", error);
-      return next(new ErrorHandler(error.message, 500));
-    }
-  })
-);
-
 
 // Function to update stock using Axios after creating orders
 async function updateStockAfterOrderCreation(item) {
   console.log("Updating stock for item:", item);
   const productId = item._id; // Use _id for Product ID
   const quantity = item.qty;
+  const sold = item.sold_out;
 
   console.log("Product ID:", productId);
   console.log("Quantity:", quantity);
@@ -109,12 +74,15 @@ async function updateStockAfterOrderCreation(item) {
 
   // Update the product's stock
   product.stock -= quantity;
+  product.sold_out += quantity;
+
   console.log("Updated stock:", product.stock);
 
   try {
     // Make HTTP PUT request to update stock using Axios
-    const response = await axios.put(`http://localhost:8000/api/v2/order/update-stock/${productId}`, {
+    const response = await axios.put(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
       stock: product.stock, // Update the stock value in the request body
+      sold_out:product.sold_out,
     });
 
     // Log the response data received from the server

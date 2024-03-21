@@ -26,7 +26,7 @@ const ProductCard = ({ data,isEvent }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const remainingItems = data?.stock < 5 && data?.stock > 0 ? data?.stock + " item left" : "";
+  const remainingItems = data?.stock < 105 && data?.stock > 0 ? data?.stock + " item left" : "";
 
 
   useEffect(() => {
