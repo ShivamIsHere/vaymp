@@ -62,6 +62,7 @@ const AdminDashboardMain = () => {
       minWidth: 130,
       flex: 0.8,
     },
+    
   ];
 
   const row = [];

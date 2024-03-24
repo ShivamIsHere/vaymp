@@ -21,8 +21,9 @@ const Cart = ({ setOpenCart }) => {
     0
   );
 
-  const quantityChangeHandler = (data) => {
-    dispatch(addTocart(data));
+  const quantityChangeHandler = (data, quantity) => {
+    const updateCartData = { ...data, qty: quantity };
+    dispatch(addTocart(updateCartData));
   };
 
   return (
@@ -92,23 +93,23 @@ const Cart = ({ setOpenCart }) => {
 };
 
 const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
+  const [selectedSize, setSelectedSize] = useState("S"); // Example: Initialize selected size state
   const [value, setValue] = useState(data.qty);
   const totalPrice = data.discountPrice * value;
 
-  const increment = (data) => {
-    if (data.stock-1 < value) {
+  const increment = () => {
+    const stock = data.stock.find((item) => item.size === selectedSize);
+    if (stock && stock.quantity - 1 < value) {
       toast.error("Product stock limited!");
     } else {
       setValue(value + 1);
-      const updateCartData = { ...data, qty: value + 1 };
-      quantityChangeHandler(updateCartData);
+      quantityChangeHandler(data, value + 1);
     }
   };
 
-  const decrement = (data) => {
+  const decrement = () => {
     setValue(value === 1 ? 1 : value - 1);
-    const updateCartData = { ...data, qty: value === 1 ? 1 : value - 1 };
-    quantityChangeHandler(updateCartData);
+    quantityChangeHandler(data, value === 1 ? 1 : value - 1);
   };
 
   return (
@@ -117,14 +118,14 @@ const CartSingle = ({ data, quantityChangeHandler, removeFromCartHandler }) => {
         <div>
           <div
             className={`bg-[#e44343] border border-[#e4434373] rounded-full w-[25px] h-[25px] ${styles.noramlFlex} justify-center cursor-pointer`}
-            onClick={() => increment(data)}
+            onClick={increment}
           >
             <HiPlus size={18} color="#fff" />
           </div>
           <span className="pl-[10px]">{data.qty}</span>
           <div
             className="bg-[#a7abb14f] rounded-full w-[25px] h-[25px] flex items-center justify-center cursor-pointer"
-            onClick={() => decrement(data)}
+            onClick={decrement}
           >
             <HiOutlineMinus size={16} color="#7d879c" />
           </div>

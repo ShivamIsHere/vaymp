@@ -8,58 +8,63 @@ const Shop = require("../model/shop");
 const cloudinary = require("cloudinary");
 const ErrorHandler = require("../utils/ErrorHandler");
 
-// create product
 router.post(
   "/create-product",
   catchAsyncErrors(async (req, res, next) => {
     try {
       const shopId = req.body.shopId;
+      if (!shopId) {
+        return next(new ErrorHandler("Shop Id is required!", 400));
+      }
+
       const shop = await Shop.findById(shopId);
       if (!shop) {
         return next(new ErrorHandler("Shop Id is invalid!", 400));
-      } else {
-        let images = [];
+      }
 
-        if (typeof req.body.images === "string") {
-          images.push(req.body.images);
-        } else {
-          images = req.body.images;
-        }
-        // Validate other data fields here
-        const { name, description, category, originalPrice, discountPrice, stock } = req.body;
-        if (!name || !description || !category || !originalPrice || !discountPrice || !stock || !images) {
+      let images = [];
+
+      if (typeof req.body.images === "string") {
+        images.push(req.body.images);
+      } else {
+        images = req.body.images;
+      }
+
+      // Validate other data fields here
+      const { name, description, category, originalPrice, discountPrice, stock } = req.body;
+      if (!name || !description || !category || !originalPrice || !discountPrice || !stock || !images) {
         return next(new ErrorHandler("Invalid product data. Please provide all required fields.", 400));
       }
-        const imagesLinks = [];
-      
-        for (let i = 0; i < images.length; i++) {
-          const result = await cloudinary.v2.uploader.upload(images[i], {
-            folder: "products",
-          });
-      
-          imagesLinks.push({
-            public_id: result.public_id,
-            url: result.secure_url,
-          });
-        }
-      
-        const productData = { ...req.body, images: imagesLinks };
-        productData.shop = shop;
 
-        const product = await Product.create(productData);
-
-        res.status(201).json({
-          success: true,
-          product,
+      const imagesLinks = [];
+    
+      for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(images[i], {
+          folder: "products",
+        });
+    
+        imagesLinks.push({
+          public_id: result.public_id,
+          url: result.secure_url,
         });
       }
+    
+      const productData = { ...req.body, images: imagesLinks };
+      productData.shop = shop;
+
+      const product = await Product.create(productData);
+
+      res.status(201).json({
+        success: true,
+        product,
+      });
     } catch (error) {
-      // Handle errors appropriately
       console.error("Error creating product:", error);
-      return next(new ErrorHandler(error, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   })
 );
+
 
 // get all products of a shop
 router.get(
@@ -220,8 +225,7 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const productId = req.params.id;
-      const { stock,sold_out } = req.body; // New stock value from the request body
-
+      const { stock, sold_out } = req.body; // New stock object from the request body
 
       // Find the product by ID in the database
       const product = await Product.findById(productId);
@@ -233,7 +237,7 @@ router.put(
 
       // Update the product's stock
       product.stock = stock;
-      product.sold_out=sold_out
+      product.sold_out = sold_out;
 
       // Save the updated product
       await product.save();
@@ -251,6 +255,7 @@ router.put(
     }
   })
 );
+
 
 
 module.exports = router;

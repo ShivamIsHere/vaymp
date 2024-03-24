@@ -63,7 +63,7 @@ const ProductDetails = ({ data }) => {
     if (isItemExists) {
       toast.error("Item already in cart!");
     } else {
-      if (data.stock < 1) {
+      if (data.stock.quantity < 1) {
         toast.error("Product stock limited!");
       } else {
         const cartData = { ...data, qty: count };
@@ -200,7 +200,7 @@ const ProductDetails = ({ data }) => {
                 <div
                   className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
                   onClick={() => addToCartHandler(data._id)}
-                >
+                  >
                   <span className="text-white flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />
                   </span>

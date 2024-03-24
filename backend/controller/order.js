@@ -57,24 +57,24 @@ router.post(
 
 
 
-// Function to update stock using Axios after creating orders
 async function updateStockAfterOrderCreation(item) {
   console.log("Updating stock for item:", item);
   const productId = item._id; // Use _id for Product ID
-  const quantity = item.qty;
-  const sold = item.sold_out;
+  const { quantity, size, sold_out } = item; // Destructure quantity, size, and sold_out from item
 
   console.log("Product ID:", productId);
   console.log("Quantity:", quantity);
+  console.log("Size:", size);
+  console.log("Sold out:", sold_out);
 
   const product = await Product.findById(productId);
   if (!product) {
     throw new Error(`Product not found with ID: ${productId}`);
   }
 
-  // Update the product's stock
-  product.stock -= quantity;
-  product.sold_out += quantity;
+  // Update the product's stock based on size and quantity
+  product.stock[size] -= quantity;
+  product.sold_out[size] += quantity;
 
   console.log("Updated stock:", product.stock);
 
@@ -82,7 +82,7 @@ async function updateStockAfterOrderCreation(item) {
     // Make HTTP PUT request to update stock using Axios
     const response = await axios.put(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
       stock: product.stock, // Update the stock value in the request body
-      sold_out:product.sold_out,
+      sold_out: product.sold_out,
     });
 
     // Log the response data received from the server
@@ -314,38 +314,7 @@ router.get(
     }
   })
 );
-// Update product stock by admin
-// router.put(
-//   "/update-product-stock/:id",
-//   isAdmin("Admin"),
-//   catchAsyncErrors(async (req, res, next) => {
-//     try {
-//       const productId = req.params.id;
-//       const newStock = req.body.stock; // Assuming the request body contains the new stock value
 
-//       // Find the product by ID
-//       const product = await Product.findById(productId);
-
-//       if (!product) {
-//         return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
-//       }
-
-//       // Update the product's stock
-//       product.stock = newStock;
-
-//       // Save the updated product
-//       await product.save();
-
-//       res.status(200).json({
-//         success: true,
-//         message: "Product stock updated successfully!",
-//         product,
-//       });
-//     } catch (error) {
-//       return next(new ErrorHandler(error.message, 500));
-//     }
-//   })
-// );
 
 module.exports = router;
 

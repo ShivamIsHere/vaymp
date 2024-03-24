@@ -1,77 +1,68 @@
-
-// const mongoose = require('mongoose');
-
-// // User Schema (for both admin and seller)
-// const userSchema = new mongoose.Schema({
-//   username: { type: String, required: true, unique: true },
-//   password: { type: String, required: true },
-//   role: { type: String, enum: ['admin', 'seller'], required: true }
-// });
-
-// // Product Schema
-// const productSchema = new mongoose.Schema({
-//   name: { type: String, required: true },
-//   description: { type: String, required: true },
-//   price: { type: Number, required: true },
-//   shop: { type: mongoose.Schema.Types.ObjectId, ref: 'Shop' }
-// });
-
-// // Shop Schema
-// const shopSchema = new mongoose.Schema({
-//   name: { type: String, required: true },
-//   seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-//   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
-// });
-
-// // Order Schema
-// const orderSchema = new mongoose.Schema({
-//   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-//   status: { type: String, enum: ['pending', 'shipped', 'delivered'], required: true },
-//   buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
-// });
-
-// // Event Schema
-// const eventSchema = new mongoose.Schema({
-//   title: { type: String, required: true },
-//   description: { type: String, required: true },
-//   date: { type: Date, required: true }
-// });
-
-// // Notification Schema
-// const notificationSchema = new mongoose.Schema({
-//   content: { type: String, required: true },
-//   date: { type: Date, default: Date.now }
-// });
-
-// // Coupon Schema
-// const couponSchema = new mongoose.Schema({
-//   code: { type: String, required: true, unique: true },
-//   discount: { type: Number, required: true },
-//   expirationDate: { type: Date, required: true }
-// });
-
-// // Carousel Schema
-// const carouselSchema = new mongoose.Schema({
-//   items: [{
-//     image: { type: String, required: true },
-//     title: { type: String, required: true },
-//     description: { type: String, required: true },
-//     link: { type: String, required: true }
-//   }]
-// });
-
-// // Export the models
-// module.exports = {
-//   User: mongoose.model('User', userSchema),
-//   Product: mongoose.model('Product', productSchema),
-//   Shop: mongoose.model('Shop', shopSchema),
-//   Order: mongoose.model('Order', orderSchema),
-//   Event: mongoose.model('Event', eventSchema),
-//   Notification: mongoose.model('Notification', notificationSchema),
-//   Coupon: mongoose.model('Coupon', couponSchema),
-//   Carousel: mongoose.model('Carousel', carouselSchema)
-// };
+const mongoose = require('mongoose');
+const userSchema = require('./user'); 
+const productSchema = require('./product'); 
+const shopSchema = require('./shop'); 
+const conversationSchema = require('./conversation'); 
+const withdrawSchema = require('./withdraw'); 
+const orderSchema = require('./order'); 
+const messagesSchema = require('./message');
+const eventSchema = require('./event'); 
+const couponCodeSchema = require('./couponCode'); 
+const carouselSchema = require('./carousel'); 
+const notificationSchema = require('./notification');
 
 
+// Include all properties from userSchema
+const adminSchema = new mongoose.Schema({
+  User: {
+    type: userSchema,
+    required: true,
+  },
+  Product: [{
+    type: productSchema,
+    required: true,
+  }],
+  Shop: [{
+    type: shopSchema,
+    required: true,
+  }],
+  Conversation: [{
+    type: conversationSchema,
+    required: true,
+  }],
+  Withdraw: [{
+    type: withdrawSchema,
+    required: true,
+  }],
+  Order: [{
+    type: orderSchema,
+    required: true,
+  }],
+  Messages: [{
+    type: messagesSchema,
+    required: true,
+  }],
+  Event: [{
+    type: eventSchema,
+    required: true,
+  }],
+  CouponCode: [{
+    type: couponCodeSchema,
+    required: true,
+  }],
+  Carousel: [{
+    type: carouselSchema,
+    required: true,
+  }],
+  Notification: [{
+    type: notificationSchema,
+    required: true,
+  }],
+  isAdmin: {
+    type: Boolean,
+    default: true,
+  },
+});
 
-
+// Export the models 
+module.exports = mongoose.model("Admin", adminSchema);

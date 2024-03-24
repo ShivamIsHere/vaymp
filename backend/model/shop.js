@@ -78,6 +78,8 @@ const shopSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordTime: Date,
+  notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }],
+
 });
 
 // Hash password

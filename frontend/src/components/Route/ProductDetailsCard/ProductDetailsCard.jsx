@@ -22,7 +22,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
-  //   const [select, setSelect] = useState(false);
 
   const handleMessageSubmit = () => {};
 
@@ -36,12 +35,12 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     setCount(count + 1);
   };
 
-  const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
+  const addToCartHandler = () => {
+    const isItemExists = cart && cart.find((i) => i._id === data._id);
     if (isItemExists) {
       toast.error("Item already in cart!");
     } else {
-      if (data.stock < count) {
+      if (data.stock.quantity < count) {
         toast.error("Product stock limited!");
       } else {
         const cartData = { ...data, qty: count };
@@ -59,12 +58,12 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     }
   }, [wishlist]);
 
-  const removeFromWishlistHandler = (data) => {
+  const removeFromWishlistHandler = () => {
     setClick(!click);
     dispatch(removeFromWishlist(data));
   };
 
-  const addToWishlistHandler = (data) => {
+  const addToWishlistHandler = () => {
     setClick(!click);
     dispatch(addToWishlist(data));
   };
@@ -146,7 +145,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                       <AiFillHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
+                        onClick={removeFromWishlistHandler}
                         color={click ? "red" : "#333"}
                         title="Remove from wishlist"
                       />
@@ -154,7 +153,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                       <AiOutlineHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
+                        onClick={addToWishlistHandler}
                         title="Add to wishlist"
                       />
                     )}
@@ -162,7 +161,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 </div>
                 <div
                   className={`${styles.button} mt-6 rounded-[4px] h-11 flex items-center`}
-                  onClick={() => addToCartHandler(data._id)}
+                  onClick={addToCartHandler}
                 >
                   <span className="text-[#fff] flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />

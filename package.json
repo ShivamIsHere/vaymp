@@ -4,6 +4,7 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "axios": "^1.6.8"
   }
 }

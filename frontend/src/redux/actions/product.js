@@ -11,6 +11,8 @@ export const createProduct =
     originalPrice,
     discountPrice,
     stock,
+    size,
+    quantity,
     shopId,
     images
   ) =>
@@ -29,6 +31,8 @@ export const createProduct =
         originalPrice,
         discountPrice,
         stock,
+        size,
+        quantity,
         shopId,
         images,
       );
