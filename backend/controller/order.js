@@ -54,55 +54,73 @@ router.post(
   })
 );
 
-
-
-
+// Function to update stock after order creation
 async function updateStockAfterOrderCreation(item) {
-  console.log("Updating stock for item:", item);
-  const productId = item._id; // Use _id for Product ID
-  const { quantity, size, sold_out } = item; // Destructure quantity, size, and sold_out from item
-
-  console.log("Product ID:", productId);
-  console.log("Quantity:", quantity);
-  console.log("Size:", size);
-  console.log("Sold out:", sold_out);
-
-  const product = await Product.findById(productId);
-  if (!product) {
-    throw new Error(`Product not found with ID: ${productId}`);
-  }
-
-  // Update the product's stock based on size and quantity
-  product.stock[size] -= quantity;
-  product.sold_out[size] += quantity;
-
-  console.log("Updated stock:", product.stock);
+  const productId = item._id;
+  const newStock = item.stock; // Assuming item.stock contains the updated stock array
 
   try {
+    console.log("Updating stock for Product ID:", productId);
+    console.log("New Stock:", newStock);
+    console.log("Item:", item);
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      throw new Error(`Product not found with ID: ${productId}`);
+    }
+
+    // // Set the entire stock array of the product to the new stock array
+    // product.stock = newStock;
+
+    // Save the updated product to the database
+    // await product.save();
+
     // Make HTTP PUT request to update stock using Axios
-    const response = await axios.put(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
-      stock: product.stock, // Update the stock value in the request body
-      sold_out: product.sold_out,
+    const response = await axios.patch(`http://localhost:8000/api/v2/product/update-stock/${productId}`, {
+      stock: newStock, // Update the stock value in the request body
     });
 
-    // Log the response data received from the server
     console.log("Response from server:", response.data);
 
-    // Check if the request was successful
     if (response.status >= 200 && response.status < 300) {
       console.log("Stock updated successfully");
     } else {
       throw new Error(`Failed to update stock - Unexpected status code: ${response.status}`);
     }
   } catch (error) {
-    // Handle Axios errors
     console.error("Error updating stock:", error.message);
     throw new Error("Failed to update stock");
   }
-
-  // Save the updated product
-  await product.save();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

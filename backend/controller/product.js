@@ -220,7 +220,7 @@ router.get(
 
 
 // Update stock for a single product
-router.put(
+router.patch(
   "/update-stock/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
@@ -235,9 +235,8 @@ router.put(
         return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
       }
 
-      // Update the product's stock
+      // Update the product's stock with the new stock array
       product.stock = stock;
-      product.sold_out = sold_out;
 
       // Save the updated product
       await product.save();
@@ -249,13 +248,11 @@ router.put(
         product,
       });
     } catch (error) {
-      // Handle errors appropriately
       console.error("Error updating product stock:", error);
       return next(new ErrorHandler(error.message, 500));
     }
   })
 );
-
 
 
 module.exports = router;

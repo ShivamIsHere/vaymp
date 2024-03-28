@@ -24,10 +24,10 @@ const ProductCard = ({ data, isEvent }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const remainingItems =
-    data?.stock.quantity < 105 && data?.stock.quantity > 0
-      ? data?.stock.quantity + " items left"
-      : "";
+  // const remainingItems =
+  //   data?.stock.quantity < 105 && data?.stock.quantity > 0
+  //     ? data?.stock.quantity + " items left"
+  //     : "";
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
@@ -108,7 +108,14 @@ const ProductCard = ({ data, isEvent }) => {
               <h4 className={`${styles.price}`}>
                 {data.originalPrice ? data.originalPrice + " $" : null}
               </h4>
-              <h5>{remainingItems}</h5>
+              {/* <h5>{remainingItems}</h5> */}
+              <div>
+        {data.stock.map((item, index) => (
+          <div key={index}>
+            <h5>{item.size}: {item.quantity} items left</h5>
+          </div>
+        ))}
+      </div>
             </div>
             <span className="font-[400] text-[17px] text-[#68d284]">
               {data?.sold_out} sold

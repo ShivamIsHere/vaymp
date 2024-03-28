@@ -175,5 +175,4 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     </div>
   );
 };
-
 export default ProductDetailsCard;

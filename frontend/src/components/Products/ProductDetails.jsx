@@ -27,6 +27,8 @@ const ProductDetails = ({ data }) => {
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(""); // State for selected size
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,7 +38,7 @@ const ProductDetails = ({ data }) => {
     } else {
       setClick(false);
     }
-  }, [data, wishlist]);
+  }, [data, wishlist,dispatch]);
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -57,21 +59,42 @@ const ProductDetails = ({ data }) => {
     setClick(!click);
     dispatch(addToWishlist(data));
   };
-
-  const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
-    if (isItemExists) {
-      toast.error("Item already in cart!");
+const addToCartHandler = async (id, selectedSize, count) => {
+  const isItemExists = cart && cart.find((i) => i._id === id);
+  if (isItemExists) {
+    toast.error("Item already in cart!");
+  } else {
+    if (selectedSize === '') {
+      toast.error("Please select a size!");
     } else {
-      if (data.stock.quantity < 1) {
-        toast.error("Product stock limited!");
+      const selectedProduct = data.stock.find((item) => item.size === selectedSize);
+      if (!selectedProduct || selectedProduct.quantity < 1) {
+        toast.error("Selected size not available or out of stock!");
       } else {
-        const cartData = { ...data, qty: count };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
+        const updatedStock = data.stock.map((item) =>
+          item.size === selectedSize
+            ? { ...item, quantity: item.quantity - count }
+            : item
+        );
+        const cartData = { ...data, stock: updatedStock, qty: count,size: selectedSize };
+console.log("data",data)
+console.log("stock",updatedStock)
+
+        try {
+          
+          // await updateStockAfterOrderCreation(itemToUpdate);
+          dispatch(addTocart(cartData));
+          toast.success("Item added to cart successfully!");
+        } catch (error) {
+          console.error("Error updating stock:", error.message);
+          toast.error("Failed to add item to cart!");
+        }
       }
     }
-  };
+  }
+};
+
+
 
   const totalReviewsLength =
     products &&
@@ -197,14 +220,34 @@ const ProductDetails = ({ data }) => {
                     )}
                   </div>
                 </div>
-                <div
-                  className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
-                  onClick={() => addToCartHandler(data._id)}
+                <div className="flex items-center pt-8">
+                    <div className="mr-4">
+                      <label htmlFor="sizeSelect" className="font-medium text-gray-800">
+                        Select Size:
+                      </label>
+                      <select
+                        id="sizeSelect"
+                        className="ml-2 bg-gray-100 rounded px-2 py-1 focus:outline-none"
+                        value={selectedSize}
+                        onChange={(e) => setSelectedSize(e.target.value)}
+                      >
+                        <option value="">Select Size</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                      </select>
+                    </div>
+                  </div>
+                  {/* Add to Cart Button */}
+                  <div
+                    className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
+                    onClick={() => addToCartHandler(data._id,selectedSize, count)}
                   >
-                  <span className="text-white flex items-center">
-                    Add to cart <AiOutlineShoppingCart className="ml-1" />
-                  </span>
-                </div>
+                    <span className="text-white flex items-center">
+                      Add to cart <AiOutlineShoppingCart className="ml-1" />
+                    </span>
+                    </div>
                 <div className="flex items-center pt-8">
                   <Link to={`/shop/preview/${data?.shop._id}`}>
                     <img
