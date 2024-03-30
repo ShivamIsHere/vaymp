@@ -77,7 +77,7 @@ const addToCartHandler = async (id, selectedSize, count) => {
             : item
         );
         const cartData = { ...data, stock: updatedStock, qty: count,size: selectedSize };
-console.log("data",data)
+console.log("cartDatacartData",cartData)
 console.log("stock",updatedStock)
 
         try {
