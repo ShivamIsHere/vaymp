@@ -36,6 +36,10 @@ const productSchema = new mongoose.Schema({
     required: {
       type: Boolean,
       default: true
+    },
+    isSelected:{
+      type:Boolean,
+      default:false
     }
   }], 
   images: [

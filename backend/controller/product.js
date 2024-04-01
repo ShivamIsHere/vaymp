@@ -255,4 +255,50 @@ router.patch(
 );
 
 
+
+
+// Update stock for a single product
+router.patch(
+  "/seller-update-stock/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const { size, quantity } = req.body; // New size and quantity from the request body
+
+      // Find the product by ID in the database
+      const product = await Product.findById(productId);
+
+      // Check if the product exists
+      if (!product) {
+        return next(new ErrorHandler(`Product not found with ID: ${productId}`, 404));
+      }
+
+      // Find the index of the size in the stock array
+      const sizeIndex = product.stock.findIndex((item) => item.size === size);
+
+      // Update the quantity of the specific size if found, otherwise add a new entry
+      if (sizeIndex !== -1) {
+        product.stock[sizeIndex].quantity = quantity;
+      } else {
+        product.stock.push({ size, quantity });
+      }
+
+      // Save the updated product
+      await product.save();
+
+      // Send success response
+      res.status(200).json({
+        success: true,
+        message: `Stock for size ${size} updated successfully`,
+        product,
+      });
+    } catch (error) {
+      console.error("Error updating product stock:", error);
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
+
 module.exports = router;

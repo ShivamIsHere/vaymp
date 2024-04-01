@@ -115,3 +115,32 @@ export const getAllProducts = () => async (dispatch) => {
     });
   }
 };
+
+export const updateProductStock = (productId, size, quantity) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "updateProductStockRequest",
+    });
+
+    const { data } = await axios.patch(
+      `${server}/product/seller-update-stock/${productId}`,
+      {
+        size,
+        quantity,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    dispatch({
+      type: "updateProductStockSuccess",
+      payload: data.product,
+    });
+  } catch (error) {
+    dispatch({
+      type: "updateProductStockFailed",
+      payload: error.response.data.message,
+    });
+  }
+};

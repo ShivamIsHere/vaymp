@@ -294,7 +294,7 @@ console.log("cartjj",cart)
     console.log("lllll",oldData)
   //   const isItemExists = cart && cart.find((i) => i._id === id);
   //   if (isItemExists) {
-  //     toast.error("Item already in cart!");
+  //     toast.error("aItem alredy in cart!");
   //   } else {
   //     if (selectedSize === '') {
   //       toast.error("Please select a size!");
