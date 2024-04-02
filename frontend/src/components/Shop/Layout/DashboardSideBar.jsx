@@ -58,7 +58,7 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
+      {/* <div className="w-full flex items-center p-4">
         <Link
           to="/dashboard-create-product"
           className="w-full flex items-center"
@@ -75,7 +75,7 @@ const DashboardSideBar = ({ active }) => {
             Create Product
           </h5>
         </Link>
-      </div>
+      </div> */}
 
       <div className="w-full flex items-center p-4">
         <Link to="/dashboard-events" className="w-full flex items-center">
@@ -93,8 +93,8 @@ const DashboardSideBar = ({ active }) => {
         </Link>
       </div>
 
-      <div className="w-full flex items-center p-4">
-        <Link to="/dashboard-create-event" className="w-full flex items-center">
+      {/* <div className="w-full flex items-center p-4"> */}
+        {/* <Link to="/dashboard-create-event" className="w-full flex items-center">
           <VscNewFile
             size={30}
             color={`${active === 6 ? "crimson" : "#555"}`}
@@ -107,7 +107,7 @@ const DashboardSideBar = ({ active }) => {
             Create Event
           </h5>
         </Link>
-      </div>
+      </div> */}
 
       <div className="w-full flex items-center p-4">
         <Link

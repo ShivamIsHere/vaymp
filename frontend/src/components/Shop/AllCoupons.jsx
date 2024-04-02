@@ -9,6 +9,8 @@ import styles from "../../styles/styles";
 import Loader from "../Layout/Loader";
 import { server } from "../../server";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AllCoupons = () => {
   const [open, setOpen] = useState(false);
@@ -21,16 +23,27 @@ const AllCoupons = () => {
   const [value, setValue] = useState(null);
   const { seller } = useSelector((state) => state.seller);
   const { products } = useSelector((state) => state.products);
-
+  console.log("all productus",products)
+  const {id}=useParams()
+  console.log("param id",id)
+  console.log("seller.id",seller)
+  let sellerId=id;
+  if(id==undefined){
+  sellerId=seller._id
+  }
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
+    let p=`${server}/coupon/get-coupon-admin/${sellerId}`
+    if(id==undefined){
+      p=`${server}/coupon/get-coupon/${sellerId}`
+    }
     axios
-      .get(`${server}/coupon/get-coupon/${seller._id}`, {
-        withCredentials: true,
-      })
-      .then((res) => {
+    .get(p, {
+      withCredentials: true,
+    })
+    .then((res) => {
         setIsLoading(false);
         setCoupouns(res.data.couponCodes);
       })
@@ -39,8 +52,12 @@ const AllCoupons = () => {
       });
   }, [dispatch]);
 
-  const handleDelete = async (id) => {
-    axios.delete(`${server}/coupon/delete-coupon/${id}`,{withCredentials: true}).then((res) => {
+  const handleDelete = async (id1) => {
+    let q=`${server}/coupon/delete-coupon-admin/${id1}`
+    if(id==undefined){
+      q=`${server}/coupon/delete-coupon/${id1}`
+    }
+    axios.delete(q,{withCredentials: true}).then((res) => {
       toast.success("Coupon code deleted succesfully!")
     })
     window.location.reload();
@@ -58,7 +75,7 @@ const AllCoupons = () => {
           maxAmount,
           selectedProducts,
           value,
-          shopId: seller._id,
+          shopId: sellerId,
         },
         { withCredentials: true }
       )
@@ -124,17 +141,17 @@ const AllCoupons = () => {
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-white">
           <div className="w-full flex justify-end">
-            <div
+          {id==undefined?null:<div
               className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
               onClick={() => setOpen(true)}
             >
               <span className="text-white">Create Coupon Code</span>
-            </div>
+            </div>}
           </div>
           <DataGrid
             rows={row}
             columns={columns}
-            pageSize={10}
+            pageSize={20}
             disableSelectionOnClick
             autoHeight
           />

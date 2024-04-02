@@ -13,11 +13,16 @@ import {
   fit,
   gender,  
 } from "../../static/data";
+import { useParams } from 'react-router-dom';
+
 import { toast } from "react-toastify";
 import { Circles } from "react-loader-spinner";
 
 const CreateProduct = () => {
-  const { seller } = useSelector((state) => state.seller);
+  // const { seller } = useSelector((state) => state.seller);
+
+  let { id } = useParams();
+  const seller=id;
   const { success, error } = useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -55,6 +60,7 @@ const CreateProduct = () => {
     }
     if (success) {
       toast.success("Product created successfully!");
+      navigate("/admin-sellers");
       window.location.reload();
     }
   }, [dispatch, error, success]);
@@ -90,7 +96,7 @@ const CreateProduct = () => {
     setSizesAndQuantities(updatedSizesAndQuantities);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -140,8 +146,7 @@ const CreateProduct = () => {
     newForm.append("gender", selectedGender);
     newForm.append("shopId", seller._id);
 
-    try {
-      await dispatch(
+     dispatch(
         createProduct({
           name,
           description,
@@ -159,19 +164,16 @@ const CreateProduct = () => {
           occasion: selectedOccasion,
           fit: selectedFit,
           gender: selectedGender,
+          shopId: seller,
           images,
-          shopId: seller._id,
         })
       );
-    } catch (error) {
-      // Handle error
-    } finally {
-      setLoading(false);
-    }
-  };
+    } 
+
 
   return (
-<div className="w-[90%] 800px:w-[50%] bg-blue-50 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">      <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
+<div className="w-[90%] 800px:w-[50%] bg-blue-50 shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">     
+ <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
       <form onSubmit={handleSubmit}>
         <br />
         <div>
@@ -467,56 +469,27 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {/*{images &&
-  // images.map((image, index) => (
-  //   <img
-  //     src={image}
-  //     key={index} // Use index as the key
-  //     alt=""
-  //     className="h-[120px] w-[120px] object-cover m-2"
-  //   />
-            // ))}*/}
-                      </div>
-
-            <div className="w-full flex items-center flex-wrap">
             {images &&
-              images.map((image, index) => (
-                <div key={index} className="relative">
-                  <img
-                    src={image}
-                    alt={`Product ${index + 1}`}
-                    className="h-[120px] w-[120px] object-cover m-2"
-                  />
-                  <button
-                    onClick={() => handleDeleteImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-                  >
-                    <AiOutlineClose />
-                  </button>
-                </div>
-))}
-</div>
-<br />
+  images.map((image, index) => (
+    <img
+      src={image}
+      key={index} // Use index as the key
+      alt=""
+      className="h-[120px] w-[120px] object-cover m-2"
+    />
+  ))}
+
+          </div>
+        
+        </div>
 
         <div>
-        {loading ? (
-                <div style={{ width: "100%", display: "flex",justifyContent:"center",alignItems:"center" }}>
-                  <Circles
-                      height={50}
-                      width={50}
-                      color="cyan"
-                      ariaLabel="circles-loading"
-                    />
-                    </div>
-              ) : (
           <input
             type="submit"
             value="Create"
             className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />)}
+          />
         </div>
-        </div>
-
       </form>
     </div>
   );

@@ -5,6 +5,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "axios": "^1.6.8"
+    "axios": "^1.6.8",
+    "express": "^4.19.2",
+    "react-loader-spinner": "^6.1.6"
   }
 }

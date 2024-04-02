@@ -7,7 +7,7 @@ import BestSellingPage from "../pages/BestSellingPage";
 import EventsPage from "../pages/EventsPage";
 import FAQPage from "../pages/FAQPage";
 import ShopsPage from "../pages/Shop/ShopsPage.jsx";
-
+import AllCoupons from "../components/Shop/AllCoupons.jsx";
 import CheckoutPage from "../pages/CheckoutPage";
 import PaymentPage from "../pages/PaymentPage";
 import OrderSuccessPage from "../pages/OrderSuccessPage";
@@ -40,5 +40,7 @@ export {
     OrderDetailsPage,
     TrackOrderPage,
     ShopsPage,
-    UserInbox
+    UserInbox,
+    AllCoupons,
+
 };

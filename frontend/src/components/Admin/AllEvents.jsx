@@ -2,18 +2,26 @@ import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { AiOutlineEye } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { server } from "../../server";
+import {deleteEvent} from "../../redux/actions/event"
+import { useDispatch, useSelector } from "react-redux";
 
 const AllEvents = () => {
   const [events, setEvents] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios.get(`${server}/event/admin-all-events`, { withCredentials: true }).then((res) => {
       setEvents(res.data.events);
     });
   }, []);
+  const handleDelete = (id) => {
+    console.log("id",id)
+    dispatch(deleteEvent(id));
+     window.location.reload();
+  }
 
   const columns = [
     { field: "id", headerName: "Event Id", minWidth: 150, flex: 0.7 },
@@ -46,13 +54,36 @@ const AllEvents = () => {
       headerName: "",
       type: "number",
       sortable: false,
-      renderCell: (params) => (
-        <Link to={`/product/${params.id}?isEvent=true`}>
-          <Button>
-            <AiOutlineEye size={20} />
-          </Button>
-        </Link>
-      ),
+      renderCell: (params) => {
+        return (
+          <>
+            <Link to={`/product/${params.id}?isEvent=true`}>
+              <Button>
+                <AiOutlineEye size={20} />
+              </Button>
+            </Link>
+          </>
+        );
+      },
+    },
+    {
+      field: "Delete",
+      flex: 0.8,
+      minWidth: 120,
+      headerName: "",
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <>
+            <Button
+            onClick={() => handleDelete(params.id)}
+            >
+              <AiOutlineDelete size={20} />
+            </Button>
+          </>
+        );
+      },
     },
   ];
 

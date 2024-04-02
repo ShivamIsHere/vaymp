@@ -135,6 +135,7 @@ router.get(
   "/getuser",
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
+    console.log("klmn",req.user)
     try {
       const user = await User.findById(req.user.id);
 

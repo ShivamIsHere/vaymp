@@ -6,10 +6,13 @@ import { categoriesData } from "../../static/data";
 import { toast } from "react-toastify";
 import { createevent } from "../../redux/actions/event";
 import { Circles } from "react-loader-spinner";
+import { useParams } from "react-router-dom";
 
 const CreateEvent = () => {
-  const { seller } = useSelector((state) => state.seller);
+  // const { seller } = useSelector((state) => state.seller);
   const { success, error } = useSelector((state) => state.events);
+  const {id}=useParams()
+  const seller=id;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -102,7 +105,9 @@ const CreateEvent = () => {
     }
     if (success) {
       toast.success("Event created successfully!",{
-        autoClose:5000000  })    // navigate("/dashboard-events");
+        autoClose:5000000  })   
+        navigate("/admin-events");
+        // navigate("/admin-sellers");
       window.location.reload();
     }
   }, [dispatch, error, success]);
@@ -154,9 +159,8 @@ const CreateEvent = () => {
       originalPrice,
       discountPrice,
       stock: stockData,
-      shopId: seller._id,
+      shopId: seller,
       images,
-      shopId: seller._id,
       start_Date: startDate?.toISOString(),
       Finish_Date: endDate?.toISOString()
     };
@@ -164,7 +168,7 @@ const CreateEvent = () => {
     try {
       await dispatch(createevent(data));
       toast.success("Event created successfully!");
-      navigate("/dashboard-events");
+      // navigate("/dashboard-events");
       window.location.reload();
       console.log("sdfsd")
       setLoading(false);

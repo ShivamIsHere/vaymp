@@ -7,6 +7,7 @@ import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
+import CreateProduct from "../Shop/CreateProduct"
 import { toast } from "react-toastify";
 import { getAllSellers } from "../../redux/actions/sellers";
 import { Link } from "react-router-dom";
@@ -66,17 +67,55 @@ const AllSellers = () => {
         field: "  ",
         flex: 1,
         minWidth: 150,
-        headerName: "Preview Shop",
+        headerName: "Create Shop",
         type: "number",
         sortable: false,
         renderCell: (params) => {
           return (
             <>
-            <Link to={`/shop/preview/${params.id}`}>
-            <Button>
-                <AiOutlineEye size={20} />
+            <Link to={`/dashboard-create-product/${params.id}`}>
+            <Button >
+            <AiOutlineEye size={20} />
               </Button>
             </Link>
+            </>
+          );
+        },
+      },
+      {
+        field: "",
+        flex: 1,
+        minWidth: 150,
+        headerName: "Create Event",
+        type: "number",
+        sortable: false,
+        renderCell: (params) => {
+          return (
+            <>
+              <Link to={`/dashboard-create-event/${params.id}`}>
+                <Button>
+                  <AiOutlineEye size={20} />
+                </Button>
+              </Link>
+            </>
+          );
+        },
+      },
+      {
+        field: "kk",
+        flex: 1,
+        minWidth: 150,
+        headerName: "Create Coupan",
+        type: "number",
+        sortable: false,
+        renderCell: (params) => {
+          return (
+            <>
+              <Link to={`/dashboard-create-coupan/${params.id}`}>
+                <Button>
+                  <AiOutlineEye size={20} />
+                </Button>
+              </Link>
             </>
           );
         },

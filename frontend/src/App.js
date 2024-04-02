@@ -21,6 +21,7 @@ import {
   OrderDetailsPage,
   TrackOrderPage,
   UserInbox,
+  AllCoupons
 } from "./routes/Routes.js";
 import {
   ShopDashboardPage,
@@ -182,11 +183,11 @@ const App = () => {
           }
         />
         <Route
-          path="/dashboard-create-product"
+          path="/dashboard-create-product/:id"
           element={
-            <SellerProtectedRoute>
+            <ProtectedAdminRoute>
               <ShopCreateProduct />
-            </SellerProtectedRoute>
+             </ProtectedAdminRoute>
           }
         />
         <Route
@@ -217,17 +218,26 @@ const App = () => {
         <Route
           path="/dashboard-products"
           element={
-            <SellerProtectedRoute>
               <ShopAllProducts />
-            </SellerProtectedRoute>
           }
         />
         <Route
-          path="/dashboard-create-event"
+          path="/dashboard-create-event/:id"
           element={
-            <SellerProtectedRoute>
+            <ProtectedAdminRoute>
               <ShopCreateEvents />
-            </SellerProtectedRoute>
+            </ProtectedAdminRoute>
+          }
+          />
+         <Route
+          path="/dashboard-create-coupan/:id"
+          element={
+            <ProtectedAdminRoute>
+            <AllCoupons/>
+              {/* <ShopCreateEvents /> */}
+            </ProtectedAdminRoute>
+            // <AllCoupons/>
+
           }
         />
         <Route
@@ -246,6 +256,15 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+         <Route
+          path="/admin-dashboard-coupouns"
+          element={
+<ProtectedAdminRoute>
+              <ShopAllCoupouns />
+</ProtectedAdminRoute>
+
+          }
+        />
         <Route
           path="/dashboard-withdraw-money"
           element={
@@ -254,6 +273,7 @@ const App = () => {
             </SellerProtectedRoute>
           }
         />
+        
         <Route
           path="/dashboard-messages"
           element={

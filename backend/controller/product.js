@@ -33,9 +33,9 @@ router.post(
 
       // Validate other data fields here
       const { name, description, category,ShopPrice,originalPrice, discountPrice, stock,gender,color } = req.body;
-      console.log(req.body)
+      // console.log(req.body)
       if (!name || !description || !category  ||!ShopPrice||!originalPrice ||  !discountPrice || !stock || !gender || !color|| !images) {
-        console.log("object1111",ShopPrice)
+        console.log("object1111",originalPrice)
         
         return next(new ErrorHandler("Invalid product data. Please provide all required fields.", 400));
 
