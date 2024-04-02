@@ -46,6 +46,27 @@ const Header = ({ activeHeading }) => {
   };
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        open &&
+        !event.target.closest(".header-sidebar") &&
+        !event.target.closest(".search-bar")
+      ) {
+        setOpen(false);
+      }
+    };
+    if (open) {
+      document.addEventListener("click", handleClickOutside);
+  
+  
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [open]);
+  useEffect(() => {
     const handleClickOutside = (e) => {
       if (searchInputRef.current && !searchInputRef.current.contains(e.target)) {
         setSearchData(null);
@@ -57,13 +78,7 @@ const Header = ({ activeHeading }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 70) {
-      setActive(true);
-    } else {
-      setActive(false);
-    }
-  });
+  
 
   return (
     <>
@@ -260,7 +275,7 @@ const Header = ({ activeHeading }) => {
           <div
             className={`fixed w-full bg-[#0000005f] z-20 h-full top-0 left-0`}
           >
-            <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll">
+            <div className="fixed w-[70%] bg-[#fff] h-screen top-0 left-0 z-10 overflow-y-scroll header-sidebar">
               <div className="w-full justify-between flex pr-3">
                 <div>
                   <div
@@ -280,25 +295,24 @@ const Header = ({ activeHeading }) => {
                 />
               </div>
 
-              <div className="my-8 w-[92%] m-auto h-[40px relative]">
-                <input
+{/* Search bar */}
+<div className="my-8 w-[92%] m-auto h-[40px relative]" ref={searchInputRef}>                <input
                   type="search"
                   placeholder="Search Product..."
                   className="h-[40px] w-full px-2 border-[#3957db] border-[2px] rounded-md"
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
-                {searchData && (
-                  <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
+{searchData && searchData.length > 0 && (                  <div className="absolute bg-[#fff] z-10 shadow w-full left-0 p-3">
                     {searchData.map((i) => {
                       const d = i.name;
 
                       const Product_name = d.replace(/\s+/g, "-");
                       return (
-                        <Link to={`/product/${Product_name}`}>
+                        <Link to={`/product/${i._id}`}>
                           <div className="flex items-center">
                             <img
-                              src={i.image_Url[0]?.url}
+                              src={i.image_Url?.[0]?.url}
                               alt=""
                               className="w-[50px] mr-2"
                             />
