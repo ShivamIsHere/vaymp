@@ -1,13 +1,21 @@
 import axios from "axios";
 import { server } from "../../server";
 
-// create product
 export const createProduct =
   (
     name,
     description,
     category,
+    sleeveType,
+    neckType,
+    brand,
+    color,
+    fabric,
+    occasion,
+    fit,
+    gender,
     tags,
+    ShopPrice,
     originalPrice,
     discountPrice,
     stock,
@@ -21,29 +29,38 @@ export const createProduct =
       dispatch({
         type: "productCreateRequest",
       });
-
+      // Create an object with the data you want to send
       const { data } = await axios.post(
         `${server}/product/create-product`,
         name,
         description,
-        category,
         tags,
+        ShopPrice,
         originalPrice,
         discountPrice,
         stock,
         size,
         quantity,
+        category,
+        neckType,
+        sleeveType,
+        brand,
+        color,
+        fabric,
+        occasion,
+        fit,
+        gender,
         shopId,
-        images,
+        images
       );
       dispatch({
         type: "productCreateSuccess",
-        payload: data.product,
+        payload: data.product
       });
     } catch (error) {
       dispatch({
         type: "productCreateFail",
-        payload: error.response.data.message,
+        payload: error.response.data.message
       });
     }
   };
@@ -52,7 +69,7 @@ export const createProduct =
 export const getAllProductsShop = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: "getAllProductsShopRequest",
+      type: "getAllProductsShopRequest"
     });
 
     const { data } = await axios.get(
@@ -60,12 +77,12 @@ export const getAllProductsShop = (id) => async (dispatch) => {
     );
     dispatch({
       type: "getAllProductsShopSuccess",
-      payload: data.products,
+      payload: data.products
     });
   } catch (error) {
     dispatch({
       type: "getAllProductsShopFailed",
-      payload: error.response.data.message,
+      payload: error.response.data.message
     });
   }
 };
@@ -74,24 +91,24 @@ export const getAllProductsShop = (id) => async (dispatch) => {
 export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({
-      type: "deleteProductRequest",
+      type: "deleteProductRequest"
     });
 
     const { data } = await axios.delete(
       `${server}/product/delete-shop-product/${id}`,
       {
-        withCredentials: true,
+        withCredentials: true
       }
     );
 
     dispatch({
       type: "deleteProductSuccess",
-      payload: data.message,
+      payload: data.message
     });
   } catch (error) {
     dispatch({
       type: "deleteProductFailed",
-      payload: error.response.data.message,
+      payload: error.response.data.message
     });
   }
 };
@@ -100,47 +117,48 @@ export const deleteProduct = (id) => async (dispatch) => {
 export const getAllProducts = () => async (dispatch) => {
   try {
     dispatch({
-      type: "getAllProductsRequest",
+      type: "getAllProductsRequest"
     });
 
     const { data } = await axios.get(`${server}/product/get-all-products`);
     dispatch({
       type: "getAllProductsSuccess",
-      payload: data.products,
+      payload: data.products
     });
   } catch (error) {
     dispatch({
       type: "getAllProductsFailed",
-      payload: error.response.data.message,
+      payload: error.response.data.message
     });
   }
 };
 
-export const updateProductStock = (productId, size, quantity) => async (dispatch) => {
-  try {
-    dispatch({
-      type: "updateProductStockRequest",
-    });
+export const updateProductStock =
+  (productId, size, quantity) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "updateProductStockRequest"
+      });
 
-    const { data } = await axios.patch(
-      `${server}/product/seller-update-stock/${productId}`,
-      {
-        size,
-        quantity,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+      const { data } = await axios.patch(
+        `${server}/product/seller-update-stock/${productId}`,
+        {
+          size,
+          quantity
+        },
+        {
+          withCredentials: true
+        }
+      );
 
-    dispatch({
-      type: "updateProductStockSuccess",
-      payload: data.product,
-    });
-  } catch (error) {
-    dispatch({
-      type: "updateProductStockFailed",
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({
+        type: "updateProductStockSuccess",
+        payload: data.product
+      });
+    } catch (error) {
+      dispatch({
+        type: "updateProductStockFailed",
+        payload: error.response.data.message
+      });
+    }
+  };

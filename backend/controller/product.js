@@ -29,11 +29,16 @@ router.post(
       } else {
         images = req.body.images;
       }
+      
 
       // Validate other data fields here
-      const { name, description, category, originalPrice, discountPrice, stock } = req.body;
-      if (!name || !description || !category || !originalPrice || !discountPrice || !stock || !images) {
+      const { name, description, category,ShopPrice,originalPrice, discountPrice, stock,gender,color } = req.body;
+      console.log(req.body)
+      if (!name || !description || !category  ||!ShopPrice||!originalPrice ||  !discountPrice || !stock || !gender || !color|| !images) {
+        console.log("object1111",ShopPrice)
+        
         return next(new ErrorHandler("Invalid product data. Please provide all required fields.", 400));
+
       }
 
       const imagesLinks = [];
@@ -53,6 +58,9 @@ router.post(
       productData.shop = shop;
 
       const product = await Product.create(productData);
+//       console.log("object",abc)
+// console.log("productdata",productData)
+// console.log("product",product)
 
       res.status(201).json({
         success: true,

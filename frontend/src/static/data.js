@@ -259,6 +259,489 @@ export const navItems = [
         "https://searchspring.com/wp-content/uploads/2022/10/Hero-Image-Platform-Others-2.png",
     },
   ];
+
+
+  export const sleeveType = [
+    {
+      id: 1,
+      title: "Full Sleeve",
+    },
+    {
+      id: 2,
+      title: "Half Sleeve",
+    },
+    {
+      id: 3,
+      title: "Short Sleeve",
+    },
+    {
+      id: 4,
+      title: "Sleeveless",
+    },
+
+  ];
+  export const neckType = [
+    {
+      id: 1,
+      title: "Boat Neck",
+    },
+    {
+      id: 2,
+      title: "Cowl Neck",
+    },
+    {
+      id: 3,
+      title: "Crew Neck",
+    },
+    {
+      id: 4,
+      title: "Halter Neck",
+    },
+    {
+      id: 5,
+      title: "Henley Neck",
+    },
+    {
+      id: 6,
+      title: "High Neck",
+    },
+    {
+      id: 7,
+      title: "Hooded Neck",
+    },
+    {
+      id: 8,
+      title: "Key Hole Neck",
+    },
+    {
+      id: 9,
+      title: "Mandarin Collar",
+    },
+    {
+      id: 10,
+      title: "Peter Pan Collar",
+    },
+    {
+      id: 11,
+      title: "Collar Neck",
+    },
+    {
+      id: 12,
+      title: "RacerBack",
+    },
+    {
+      id: 13,
+      title: "Round Neck",
+    },
+    {
+      id: 14,
+      title: "Scoop Neck",
+    },
+    {
+      id: 15,
+      title: "Shawl Neck",
+    },
+    {
+      id: 16,
+      title: "Square Neck",
+    },
+    {
+      id: 17,
+      title: "Stylished Neck",
+    },
+    {
+      id: 18,
+      title: "Turtle Neck",
+    },
+    {
+      id: 19,
+      title: "V Neck",
+    },
+    {
+      id: 20,
+      title: "Zip Neck",
+    }
+  ];
+  export const color = [
+    {
+      id: 1,
+      name: "Beige",
+    },
+    {
+      id: 2,
+      name: "Black",
+    },
+    {
+      id: 3,
+      name: "Blue",
+    },
+    {
+      id: 4,
+      name: "Brown",
+    },
+    {
+      id: 5,
+      name: "Dark Blue",
+    },
+    {
+      id: 6,
+      name: "Dark Green",
+    },
+    {
+      id: 7,
+      name: "Gold",
+    },
+    {
+      id: 8,
+      name: "Green",
+    },
+    {
+      id: 9,
+      name: "Grey",
+    },
+    {
+      id: 10,
+      name: "Light Blue",
+    },
+    {
+      id: 11,
+      name: "Light Green",
+    },
+    {
+      id: 12,
+      name: "Maroon",
+    },
+    {
+      id: 13,
+      name: "Multicolor",
+    },
+    {
+      id: 14,
+      name: "Navy Blue",
+    },
+    {
+      id: 15,
+      name: "Orange",
+    },
+    {
+      id: 16,
+      name: "Pink",
+    },
+    {
+      id: 17,
+      name: "Purple",
+    },
+    {
+      id: 18,
+      name: "Red",
+    },
+    {
+      id: 19,
+      name: "Silver",
+    },
+    {
+      id: 20,
+      name: "White",
+    },
+    {
+      id: 21,
+      name: "Yellow",
+    }
+  ];
+  export const fabric = [
+    {
+      id: 1,
+      type: "Modal",
+    },
+    {
+      id: 2,
+      type: "Linen Blend",
+    },
+    {
+      id: 3,
+      type: "Wool Blend",
+    },
+    {
+      id: 4,
+      type: "Poly Cotton",
+    },
+    {
+      id: 5,
+      type: "Nylon",
+    },
+    {
+      id: 6,
+      type: "Viscose Rayon",
+    },
+    {
+      id: 7,
+      type: "Cotton Blend",
+    },
+    {
+      id: 8,
+      type: "Elastane",
+    },
+    {
+      id: 9,
+      type: "Organic Cotton",
+    },
+    {
+      id: 10,
+      type: "Polyester",
+    },
+    {
+      id: 11,
+      type: "Pure Cotton",
+    }
+  ];
+  export const occasion = [
+    {
+      id: 1,
+      type: "Beach Wear",
+    },
+    {
+      id: 2,
+      type: "Casual",
+    },
+    {
+      id: 3,
+      type: "Formal",
+    },
+    {
+      id: 4,
+      type: "Lounge Wear",
+    },
+    {
+      id: 5,
+      type: "Party",
+    },
+    {
+      id: 6,
+      type: "Sports",
+    }
+  ];
+  export const fit = [
+    {
+      id: 1,
+      type: "Boxy",
+    },
+    {
+      id: 2,
+      type: "Compression",
+    },
+    {
+      id: 3,
+      type: "Loose",
+    },
+    {
+      id: 4,
+      type: "Oversized",
+    },
+    {
+      id: 5,
+      type: "Regular",
+    },
+    {
+      id: 6,
+      type: "Slims",
+    }
+  ];
+  export const gender = [
+    {
+      id: 1,
+      type: "Men",
+    },
+    {
+      id: 2,
+      type: "Women",
+    },
+    {
+      id: 3,
+      type: "Boys",
+    },
+    {
+      id: 4,
+      type: "Girls",
+    },
+    {
+      id: 5,
+      type: "Boys & Girls",
+    },
+    {
+      id: 6,
+      type: "Baby Boys & Baby Girls",
+    },
+    {
+      id: 7,
+      type: "Baby Boys",
+    },
+    {
+      id: 8,
+      type: "Baby Girls",
+    }
+  ];
+  // export const size = [
+  //   {
+  //     id: 1,
+  //     type: "2XS",
+  //   },
+  //   {
+  //     id: 2,
+  //     type: "XS",
+  //   },
+  //   {
+  //     id: 3,
+  //     type: "S",
+  //   },
+  //   {
+  //     id: 4,
+  //     type: "M",
+  //   },
+  //   {
+  //     id: 5,
+  //     type: "L",
+  //   },
+  //   {
+  //     id: 6,
+  //     type: "XL",
+  //   },
+  //   {
+  //     id: 7,
+  //     type: "2XL",
+  //   },
+  //   {
+  //     id: 8,
+  //     type: "3XL",
+  //   },
+  //   {
+  //     id: 9,
+  //     type: "4XL",
+  //   },
+  //   {
+  //     id: 10,
+  //     type: "5XL",
+  //   },
+  //   {
+  //     id: 11,
+  //     type: "6XL",
+  //   },
+  //   {
+  //     id: 12,
+  //     type: "7XL",
+  //   },
+  //   {
+  //     id: 13,
+  //     type: "8XL",
+  //   },
+  //   {
+  //     id: 14,
+  //     type: "0 - 1 Month",
+  //   },
+  //   {
+  //     id: 15,
+  //     type: "1 - 2 Months",
+  //   },
+  //   {
+  //     id: 16,
+  //     type: "2 - 3 Months",
+  //   },
+  //   {
+  //     id: 17,
+  //     type: "3 - 4 Months",
+  //   },
+  //   {
+  //     id: 18,
+  //     type: "4 - 5 Months",
+  //   },
+  //   {
+  //     id: 19,
+  //     type: "5 - 6 Months",
+  //   },
+  //   {
+  //     id: 20,
+  //     type: "6 - 7 Months",
+  //   },
+  //   {
+  //     id: 21,
+  //     type: "7 - 8 Months",
+  //   },
+  //   {
+  //     id: 22,
+  //     type: "8 - 9 Months",
+  //   },
+  //   {
+  //     id: 23,
+  //     type: "9 - 10 Months",
+  //   },
+  //   {
+  //     id: 24,
+  //     type: "10 - 11 Months",
+  //   },
+  //   {
+  //     id: 25,
+  //     type: "11 - 12 Months",
+  //   },
+  //   {
+  //     id: 26,
+  //     type: "1 - 2 Years",
+  //   },
+  //   {
+  //     id: 27,
+  //     type: "2 - 3 Years",
+  //   },
+  //   {
+  //     id: 28,
+  //     type: "3 - 4 Years",
+  //   },
+  //   {
+  //     id: 29,
+  //     type: "4 - 5 Years",
+  //   },
+  //   {
+  //     id: 30,
+  //     type: "5 - 6 Years",
+  //   },
+  //   {
+  //     id: 31,
+  //     type: "6 - 7 Years",
+  //   },
+  //   {
+  //     id: 32,
+  //     type: "7 - 8 Years",
+  //   },
+  //   {
+  //     id: 33,
+  //     type: "8 - 9 Years",
+  //   },
+  //   {
+  //     id: 34,
+  //     type: "9 - 10 Years",
+  //   },
+  //   {
+  //     id: 35,
+  //     type: "10 - 11 Years",
+  //   },
+  //   {
+  //     id: 36,
+  //     type: "11 - 12 Years",
+  //   },
+  //   {
+  //     id: 37,
+  //     type: "12 - 13 Years",
+  //   },
+  //   {
+  //     id: 38,
+  //     type: "13 - 14 Years",
+  //   },
+  //   {
+  //     id: 39,
+  //     type: "14 - 15 Years",
+  //   },
+  //   {
+  //     id: 40,
+  //     type: "15 - 16 Years",
+  //   }
+  // ];
   
   // product Data
   export const productData = [
@@ -320,7 +803,6 @@ export const navItems = [
       rating: 5,
       total_sell: 80,
       stock: 10,
-      category:"Mobile & Tablets"
     },
     {
       id: 1,
@@ -351,7 +833,6 @@ export const navItems = [
       rating: 4,
       total_sell: 75,
       stock: 10,
-      category:"Computers & Laptop"
     },
     {
       id: 4,
@@ -413,7 +894,6 @@ export const navItems = [
       rating: 5,
       total_sell: 49,
       stock: 10,
-      category:"Shoes"
     },
     {
       id: 1,

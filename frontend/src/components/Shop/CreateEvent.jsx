@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle,AiOutlineMinusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
@@ -19,20 +19,54 @@ const CreateEvent = () => {
   const [tags, setTags] = useState("");
   const [originalPrice, setOriginalPrice] = useState();
   const [discountPrice, setDiscountPrice] = useState();
-  const [sizesAndQuantities, setSizesAndQuantities] = useState([{ size: "", quantity: 0 }]);
+  const [sizesAndQuantities, setSizesAndQuantities] = useState([
+    { size: "", quantity: 0 }
+  ]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-
-
   const sizes = [
-    '2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL', '7XL', '8XL',
-    '0 - 1 Month', '1 - 2 Months', '2 - 3 Months', '3 - 4 Months', '4 - 5 Months', '5 - 6 Months', 
-    '6 - 7 Months', '7 - 8 Months', '8 - 9 Months', '9 - 10 Months', '10 - 11 Months', '11 - 12 Months', 
-    '1 - 2 Years', '2 - 3 Years', '3 - 4 Years', '4 - 5 Years', '5 - 6 Years', '6 - 7 Years', '7 - 8 Years', 
-    '8 - 9 Years', '9 - 10 Years', '10 - 11 Years', '11 - 12 Years', '12 - 13 Years', '13 - 14 Years', 
-    '14 - 15 Years', '15 - 16 Years'
-  ];  
+    "2XS",
+    "XS",
+    "S",
+    "M",
+    "L",
+    "XL",
+    "2XL",
+    "3XL",
+    "4XL",
+    "5XL",
+    "6XL",
+    "7XL",
+    "8XL",
+    "0 - 1 Month",
+    "1 - 2 Months",
+    "2 - 3 Months",
+    "3 - 4 Months",
+    "4 - 5 Months",
+    "5 - 6 Months",
+    "6 - 7 Months",
+    "7 - 8 Months",
+    "8 - 9 Months",
+    "9 - 10 Months",
+    "10 - 11 Months",
+    "11 - 12 Months",
+    "1 - 2 Years",
+    "2 - 3 Years",
+    "3 - 4 Years",
+    "4 - 5 Years",
+    "5 - 6 Years",
+    "6 - 7 Years",
+    "7 - 8 Years",
+    "8 - 9 Years",
+    "9 - 10 Years",
+    "10 - 11 Years",
+    "11 - 12 Years",
+    "12 - 13 Years",
+    "13 - 14 Years",
+    "14 - 15 Years",
+    "15 - 16 Years"
+  ];
   const handleStartDateChange = (e) => {
     const startDate = new Date(e.target.value);
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
@@ -94,12 +128,14 @@ const CreateEvent = () => {
     setSizesAndQuantities(updatedSizesAndQuantities);
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const newForm = new FormData();
-    const stockData = sizesAndQuantities.map(({ size, quantity }) => ({ size, quantity }));
+    const stockData = sizesAndQuantities.map(({ size, quantity }) => ({
+      size,
+      quantity
+    }));
 
     images.forEach((image) => {
       newForm.append("images", image);
@@ -116,7 +152,7 @@ const CreateEvent = () => {
       images,
       shopId: seller._id,
       start_Date: startDate?.toISOString(),
-      Finish_Date: endDate?.toISOString(),
+      Finish_Date: endDate?.toISOString()
     };
     dispatch(createevent(data));
   };
@@ -216,56 +252,59 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-            <label className="pb-2">Size and Quantity</label>
-            {sizesAndQuantities.map((item, index) => (
+          <label className="pb-2">Size and Quantity</label>
+          {sizesAndQuantities.map((item, index) => (
             <div key={index} className="flex mt-2">
-            <select
-            className="w-1/2 border h-[35px] rounded-[5px] mr-2"
-            value={item.size}
-            onChange={(e) => {
-            const updatedSizesAndQuantities = [...sizesAndQuantities];
-            updatedSizesAndQuantities[index].size = e.target.value;
-            setSizesAndQuantities(updatedSizesAndQuantities);
-            }}
-            >
-            <option value="">Select size</option>
-            {sizes.map((size) => (
-            <option value={size} key={size}>
-            {size}
-            </option>
-            ))}
-            </select>
-            <input
-            type="number"
-            value={item.quantity}
-            onChange={(e) => {
-            const updatedSizesAndQuantities = [...sizesAndQuantities];
-            updatedSizesAndQuantities[index].quantity = parseInt(e.target.value, 10);
-            setSizesAndQuantities(updatedSizesAndQuantities);
-            }}
-            placeholder="Enter product quantity..."
-            className="w-1/2 border h-[35px] rounded-[5px] mr-2 px-3"
-            />
-            {index === sizesAndQuantities.length - 1 && (
-            <AiOutlinePlusCircle
-                           size={30}
-                           className="mt-1 cursor-pointer"
-                           color="#555"
-                           onClick={handleAddSizeQuantity}
-                         />
-            )}
-            {index !== sizesAndQuantities.length - 1 && (
-            <AiOutlineMinusCircle
-            size={30}
-            className="mt-1 cursor-pointer"
-            color="red"
-            onClick={() => handleRemoveSizeQuantity(index)}
-            />
-            )}
+              <select
+                className="w-1/2 border h-[35px] rounded-[5px] mr-2"
+                value={item.size}
+                onChange={(e) => {
+                  const updatedSizesAndQuantities = [...sizesAndQuantities];
+                  updatedSizesAndQuantities[index].size = e.target.value;
+                  setSizesAndQuantities(updatedSizesAndQuantities);
+                }}
+              >
+                <option value="">Select size</option>
+                {sizes.map((size) => (
+                  <option value={size} key={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                value={item.quantity}
+                onChange={(e) => {
+                  const updatedSizesAndQuantities = [...sizesAndQuantities];
+                  updatedSizesAndQuantities[index].quantity = parseInt(
+                    e.target.value,
+                    10
+                  );
+                  setSizesAndQuantities(updatedSizesAndQuantities);
+                }}
+                placeholder="Enter product quantity..."
+                className="w-1/2 border h-[35px] rounded-[5px] mr-2 px-3"
+              />
+              {index === sizesAndQuantities.length - 1 && (
+                <AiOutlinePlusCircle
+                  size={30}
+                  className="mt-1 cursor-pointer"
+                  color="#555"
+                  onClick={handleAddSizeQuantity}
+                />
+              )}
+              {index !== sizesAndQuantities.length - 1 && (
+                <AiOutlineMinusCircle
+                  size={30}
+                  className="mt-1 cursor-pointer"
+                  color="red"
+                  onClick={() => handleRemoveSizeQuantity(index)}
+                />
+              )}
             </div>
-            ))}
-            </div>
-            <br />
+          ))}
+        </div>
+        <br />
         <div>
           <label className="pb-2">
             Event Start Date <span className="text-red-500">*</span>
@@ -298,7 +337,7 @@ const CreateEvent = () => {
           />
         </div>
         <br />
-        
+
         <div>
           <label className="pb-2">
             Upload Images <span className="text-red-500">*</span>

@@ -3,7 +3,16 @@ import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../redux/actions/product";
-import { categoriesData } from "../../static/data";
+import {
+  categoriesData,
+  sleeveType,
+  neckType,
+  color,
+  fabric,
+  occasion,
+  fit,
+  gender,  
+} from "../../static/data";
 import { toast } from "react-toastify";
 
 const CreateProduct = () => {
@@ -18,7 +27,16 @@ const CreateProduct = () => {
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
+  const [ShopPrice, setShopPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
+  const [selectedSleeveType, setSelectedSleeveType] = useState("");
+  const [selectedNeckType, setSelectedNeckType] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedFabric, setSelectedFabric] = useState("");
+  const [selectedOccasion, setSelectedOccasion] = useState("");
+  const [selectedFit, setSelectedFit] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
   const [sizesAndQuantities, setSizesAndQuantities] = useState([{ size: "", quantity: 0 }]);
 
   const sizes = [
@@ -29,7 +47,6 @@ const CreateProduct = () => {
     '8 - 9 Years', '9 - 10 Years', '10 - 11 Years', '11 - 12 Years', '12 - 13 Years', '13 - 14 Years', 
     '14 - 15 Years', '15 - 16 Years'
   ];  
-
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -69,8 +86,28 @@ const CreateProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    // console.log({
+    //   name,
+    //   description,
+    //   category,
+    //   tags,
+    //   shopPrice,
+    //   originalPrice,
+    //   discountPrice,
+    //   stock: sizesAndQuantities,
+    //   images,
+    //   sleeveType: selectedSleeveType,
+    //   neckType: selectedNeckType,
+    //   brand: selectedBrand,
+    //   color: selectedColor,
+    //   fabric: selectedFabric,
+    //   occasion: selectedOccasion,
+    //   fit: selectedFit,
+    //   gender: selectedGender,
+    //   shopId: seller._id,
+    // });
     const stockData = sizesAndQuantities.map(({ size, quantity }) => ({ size, quantity }));
+
 
     const newForm = new FormData();
 
@@ -80,23 +117,41 @@ const CreateProduct = () => {
 
     newForm.append("name", name);
     newForm.append("description", description);
-    newForm.append("category", category);
     newForm.append("tags", tags);
+    newForm.append("Shop's Price", ShopPrice);
     newForm.append("originalPrice", originalPrice);
     newForm.append("discountPrice", discountPrice);
+    newForm.append("category", category);
+    newForm.append("neckType", selectedNeckType);
+    newForm.append("sleeveType", selectedSleeveType);
+    newForm.append("brand", selectedBrand);
+    newForm.append("color", selectedColor);
+    newForm.append("fabric", selectedFabric);
+    newForm.append("occasion", selectedOccasion);
+    newForm.append("fit", selectedFit);
+    newForm.append("gender", selectedGender);
     newForm.append("shopId", seller._id);
 
     dispatch(
       createProduct({
         name,
         description,
-        category,
         tags,
+        ShopPrice,
         originalPrice,
         discountPrice,
         stock: stockData,
-        shopId: seller._id,
+        category,
+        neckType: selectedNeckType,
+        sleeveType: selectedSleeveType,
+        brand: selectedBrand,
+        color: selectedColor,
+        fabric: selectedFabric,
+        occasion: selectedOccasion,
+        fit: selectedFit,
+        gender: selectedGender,
         images,
+        shopId: seller._id,
       })
     );
   };
@@ -107,7 +162,9 @@ const CreateProduct = () => {
       <form onSubmit={handleSubmit}>
         <br />
         <div>
-          <label className="pb-2">Name <span className="text-red-500">*</span></label>
+          <label className="pb-2">
+            Name <span className="text-red-500">*</span>
+          </label>
           <input
             type="text"
             name="name"
@@ -119,7 +176,9 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">Description <span className="text-red-500">*</span></label>
+          <label className="pb-2">
+            Description <span className="text-red-500">*</span>
+          </label>
           <textarea
             cols="30"
             required
@@ -133,22 +192,7 @@ const CreateProduct = () => {
           ></textarea>
         </div>
         <br />
-        <div>
-          <label className="pb-2">Category <span className="text-red-500">*</span></label>
-          <select
-            className="w-full mt-2 border h-[35px] rounded-[5px]"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="">Choose a category</option>
-            {categoriesData.map((i) => (
-              <option value={i.title} key={i.title}>
-                {i.title}
-              </option>
-            ))}
-          </select>
-        </div>
-        <br />
+        
         <div>
           <label className="pb-2">Tags</label>
           <input
@@ -159,36 +203,47 @@ const CreateProduct = () => {
             placeholder="Enter your product tags..."
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
-
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Shop's Price</label>
+          <input
+            type="number"
+            name="price"
+            value={ShopPrice}
+            onChange={(e) => setShopPrice(e.target.value)}
+            placeholder="Enter your product price..."
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
         </div>
         <br />
         <div>
           <label className="pb-2">Original Price</label>
           <input
-              type="number"
-              name="price"
-              value={originalPrice}
-              onChange={(e) => setOriginalPrice(e.target.value)}
-              placeholder="Enter your product price..."
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <br />
-          <div>
-            <label className="pb-2">
-              Price (With Discount) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={discountPrice}
-              onChange={(e) => setDiscountPrice(e.target.value)}
-              placeholder="Enter your product price with discount..."
-              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
-          <br />
-          <div>
+            type="number"
+            name="price"
+            value={originalPrice}
+            onChange={(e) => setOriginalPrice(e.target.value)}
+            placeholder="Enter your product price..."
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Price (With Discount) <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            name="price"
+            value={discountPrice}
+            onChange={(e) => setDiscountPrice(e.target.value)}
+            placeholder="Enter your product price with discount..."
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+        <br />
+        <div>
             <label className="pb-2">Size and Quantity</label>
             {sizesAndQuantities.map((item, index) => (
               <div key={index} className="flex mt-2">
@@ -239,17 +294,189 @@ const CreateProduct = () => {
             ))}
           </div>
           <br />
-          <div>
-            <input
-              type="submit"
-              value="Create"
-              className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
+        <div>
+          <label className="pb-2">
+            Category <span className="text-red-500">*</span>
+          </label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Choose a category</option>
+            {categoriesData.map((i) => (
+              <option value={i.title} key={i.title}>
+                {i.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Neck Type</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedNeckType}
+            onChange={(e) => setSelectedNeckType(e.target.value)}
+          >
+            <option value="">Choose neck type</option>
+            {neckType.map((i) => (
+              <option value={i.title} key={i.title}>
+                {i.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Sleeve Type</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedSleeveType}
+            onChange={(e) => setSelectedSleeveType(e.target.value)}
+          >
+            <option value="">Choose sleeve type</option>
+            {sleeveType.map((type) => (
+              <option value={type.title} key={type.title}>
+                {type.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Brand <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={selectedBrand}
+            onChange={(e) => setSelectedBrand(e.target.value)}
+            placeholder="Enter your product name..."
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Color</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedColor}
+            onChange={(e) => setSelectedColor(e.target.value)}
+          >
+            <option value="">Choose Color</option>
+            {color.map((type) => (
+              <option value={type.name} key={type.name}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Fabric</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedFabric}
+            onChange={(e) => setSelectedFabric(e.target.value)}
+          >
+            <option value="">Choose Fabric type</option>
+            {fabric.map((i) => (
+              <option value={i.type} key={i.type}>
+                {i.type}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Occasion</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedOccasion}
+            onChange={(e) => setSelectedOccasion(e.target.value)}
+          >
+            <option value="">Choose Occasion type</option>
+            {occasion.map((i) => (
+              <option value={i.type} key={i.type}>
+                {i.type}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">fit</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedFit}
+            onChange={(e) => setSelectedFit(e.target.value)}
+          >
+            <option value="">Choose fit type</option>
+            {fit.map((i) => (
+              <option value={i.type} key={i.type}>
+                {i.type}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">Gender</label>
+          <select
+            className="w-full mt-2 border h-[35px] rounded-[5px]"
+            value={selectedGender}
+            onChange={(e) => setSelectedGender(e.target.value)}
+          >
+            <option value="">Choose Gender type</option>
+            {gender.map((i) => (
+              <option value={i.type} key={i.type}>
+                {i.type}
+              </option>
+            ))}
+          </select>
+        </div>
+        <br />
+        <div>
+          <label className="pb-2">
+            Upload Images <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="file"
+            name=""
+            id="upload"
+            className="hidden"
+            multiple
+            onChange={handleImageChange}
+          />
+          <div className="w-full flex items-center flex-wrap">
+            <label htmlFor="upload">
+              <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
+            </label>
+            {images &&
+  images.map((image, index) => (
+    <img
+      src={image}
+      key={index} // Use index as the key
+      alt=""
+      className="h-[120px] w-[120px] object-cover m-2"
+    />
+  ))}
+
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div>
+          <input
+            type="submit"
+            value="Create"
+            className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+      </form>
+    </div>
   );
 };
 
 export default CreateProduct;
-
