@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineMinusCircle ,AiOutlineClose} from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "../../redux/actions/product";
@@ -73,7 +73,11 @@ const CreateProduct = () => {
       reader.readAsDataURL(file);
     });
   };
-
+  const handleDeleteImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+  };
   const handleAddSizeQuantity = () => {
     setSizesAndQuantities([...sizesAndQuantities, { size: "", quantity: 0 }]);
   };
@@ -454,18 +458,36 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {images &&
-  images.map((image, index) => (
-    <img
-      src={image}
-      key={index} // Use index as the key
-      alt=""
-      className="h-[120px] w-[120px] object-cover m-2"
-    />
-  ))}
+            {/*{images &&
+  // images.map((image, index) => (
+  //   <img
+  //     src={image}
+  //     key={index} // Use index as the key
+  //     alt=""
+  //     className="h-[120px] w-[120px] object-cover m-2"
+  //   />
+            // ))}*/}
+                      </div>
 
-          </div>
-        </div>
+            <div className="w-full flex items-center flex-wrap">
+            {images &&
+              images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    className="h-[120px] w-[120px] object-cover m-2"
+                  />
+                  <button
+                    onClick={() => handleDeleteImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <AiOutlineClose />
+                  </button>
+                </div>
+))}
+</div>
+<br />
 
         <div>
           <input
@@ -474,6 +496,8 @@ const CreateProduct = () => {
             className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
+        </div>
+
       </form>
     </div>
   );
