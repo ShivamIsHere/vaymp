@@ -203,6 +203,8 @@ const ProfileContent = ({ active }) => {
 const AllOrders = () => {
   const { user } = useSelector((state) => state.user);
   const { orders } = useSelector((state) => state.order);
+  const {allProducts,isLoading} = useSelector((state) => state.products);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
