@@ -72,7 +72,7 @@ const CreateEvent = () => {
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
     setStartDate(startDate);
     setEndDate(null);
-    document.getElementById("end-date").min = minEndDate.toISOString.slice(
+    document.getElementById("end-date").min = minEndDate.toISOString().slice(
       0,
       10
     );
@@ -96,8 +96,8 @@ const CreateEvent = () => {
       toast.error(error);
     }
     if (success) {
-      toast.success("Event created successfully!");
-      // navigate("/dashboard-events");
+      toast.success("Event created successfully!",{
+        autoClose:5000000  })    // navigate("/dashboard-events");
       window.location.reload();
     }
   }, [dispatch, error, success]);
