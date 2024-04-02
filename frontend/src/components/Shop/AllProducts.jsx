@@ -78,8 +78,24 @@ const AllProducts = () => {
   
 
   const columns = [
-    { field: "id", headerName: "Product Id", minWidth: 150, flex: 0.7 },
-    { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 },
+    { field: "image", headerName: "Product Image", minWidth: 180, flex: 0.7,
+    renderCell: (params) => {
+      return (
+        <Link to={`/product/${params.id}`}>
+          <img src={params.value} alt="Product" style={{ width: 50, height: 50 }} />
+        </Link>
+      );
+    }
+  },
+    { field: "name", headerName: "Name", minWidth: 180, flex: 1.4 ,
+    renderCell: (params) => {
+      return (
+        <Link to={`/product/${params.id}`}>
+          {params.value}
+        </Link>
+      );
+    }
+  },
     { field: "price", headerName: "Price", minWidth: 100, flex: 0.6 },
     {
       field: "size",
@@ -152,10 +168,10 @@ const AllProducts = () => {
       sortable: false,
       renderCell: (params) => (
         <Link to={`/product/${params.id}`}>
-          <Button>
-            <AiOutlineEye size={20} />
-          </Button>
-        </Link>
+            <Button>
+              <AiOutlineEye size={20} />
+            </Button>
+          </Link>
       ),
     },
     {
@@ -167,8 +183,8 @@ const AllProducts = () => {
       sortable: false,
       renderCell: (params) => (
         <Button onClick={() => handleDelete(params.id)}>
-          <AiOutlineDelete size={20} />
-        </Button>
+            <AiOutlineDelete size={20} />
+          </Button>
       ),
     },
   ];
@@ -177,6 +193,8 @@ const AllProducts = () => {
   ? products.flatMap((item) =>
       item.stock.map((stockItem, index) => ({
         id: `${item._id}`, // Use size as part of the ID to ensure uniqueness
+        image: item.images && item.images[0]?.url, // Assuming item.images is an array of image objects
+
         productId: item._id,
         name: item.name,
         price: "Rs. " + item.discountPrice,
