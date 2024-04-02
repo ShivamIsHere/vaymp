@@ -39,9 +39,15 @@ const Header = ({ activeHeading }) => {
 
     const filteredProducts =
       allProducts &&
-      allProducts.filter((product) =>
-        product.name.toLowerCase().includes(term.toLowerCase())
-      );
+      allProducts.filter((product) => {
+
+        let p1 =
+          product.name.toLowerCase().includes(term.toLowerCase()) ||
+          product.category.toLowerCase().includes(term.toLowerCase()) ||
+          product.description.toLowerCase().includes(term.toLowerCase()) ||
+          product.tags.toLowerCase().includes(term.toLowerCase());
+        return p1;
+      });
     setSearchData(filteredProducts);
   };
 
@@ -107,7 +113,7 @@ const Header = ({ activeHeading }) => {
                 {searchData &&
                   searchData.map((i, index) => {
                     return (
-                      <Link to={`/product/${i._id}`}>
+                      <a href={`/product/${i._id}`}>
                         <div className="w-full flex items-start-py-3">
                           <img
                             src={`${i.images[0]?.url}`}
@@ -116,7 +122,7 @@ const Header = ({ activeHeading }) => {
                           />
                           <h1>{i.name}</h1>
                         </div>
-                      </Link>
+                      </a>
                     );
                   })}
               </div>

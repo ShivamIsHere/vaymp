@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { toast } from "react-toastify";
 import { createevent } from "../../redux/actions/event";
+import { Circles } from "react-loader-spinner";
 
 const CreateEvent = () => {
   const { seller } = useSelector((state) => state.seller);
@@ -24,6 +25,7 @@ const CreateEvent = () => {
   ]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const sizes = [
     "2XS",
@@ -71,7 +73,10 @@ const CreateEvent = () => {
     const startDate = new Date(e.target.value);
     const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
     setStartDate(startDate);
-    setEndDate(null);
+    document.getElementById("start-date").min = startDate.toISOString().slice(
+      0,
+      10
+    );
     document.getElementById("end-date").min = minEndDate.toISOString().slice(
       0,
       10
@@ -128,8 +133,9 @@ const CreateEvent = () => {
     setSizesAndQuantities(updatedSizesAndQuantities);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const newForm = new FormData();
     const stockData = sizesAndQuantities.map(({ size, quantity }) => ({
@@ -154,8 +160,19 @@ const CreateEvent = () => {
       start_Date: startDate?.toISOString(),
       Finish_Date: endDate?.toISOString()
     };
-    dispatch(createevent(data));
-  };
+    console.log("sdflllsd")
+    try {
+      await dispatch(createevent(data));
+      toast.success("Event created successfully!");
+      navigate("/dashboard-events");
+      window.location.reload();
+      console.log("sdfsd")
+      setLoading(false);
+    } catch (error) {
+      // Handle error
+      console.log("ffff",error)
+      setLoading(false);
+    }  };
 
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
@@ -328,7 +345,7 @@ const CreateEvent = () => {
           <input
             type="date"
             name="price"
-            id="start-date"
+            id="end-date"
             value={endDate ? endDate.toISOString().slice(0, 10) : ""}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={handleEndDateChange}
@@ -366,12 +383,22 @@ const CreateEvent = () => {
           </div>
           <br />
           <div>
+          {loading ? (
+                <div style={{ width: "100%", display: "flex",justifyContent:"center",alignItems:"center" }}>
+                  <Circles
+                      height={50}
+                      width={50}
+                      color="cyan"
+                      ariaLabel="circles-loading"
+                    />
+                    </div>
+              ) : (
             <input
               type="submit"
               value="Create"
               className="mt-2 cursor-pointer appearance-none text-center block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            />
-          </div>
+              />)}
+              </div>
         </div>
       </form>
     </div>
