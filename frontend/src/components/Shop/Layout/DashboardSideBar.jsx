@@ -123,7 +123,7 @@ const DashboardSideBar = ({ active }) => {
               active === 7 ? "text-[crimson]" : "text-[#555]"
             }`}
           >
-            Withdraw Money
+            Total Income
           </h5>
         </Link>
       </div>

@@ -101,10 +101,10 @@ const DashboardHero = () => {
               {/* <span className="text-[16px]">(with 10% service charge)</span> */}
             </h3>
           </div>
-          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">${availableBalance}</h5>
-          <Link to="/dashboard-withdraw-money">
-            <h5 className="pt-4 pl-[2] text-[#077f9c]">Withdraw Money</h5>
-          </Link>
+          <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">Rs.{availableBalance}</h5>         
+           <Link to="/dashboard-withdraw-money">
+           <h5 className="pt-4 pl-[2] text-[#077f9c]">Total Income</h5>
+           </Link>
         </div>
 
         <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">

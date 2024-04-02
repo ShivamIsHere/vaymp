@@ -179,7 +179,7 @@ const AllProducts = () => {
         id: `${item._id}`, // Use size as part of the ID to ensure uniqueness
         productId: item._id,
         name: item.name,
-        price: `US$ ${item.discountPrice}`,
+        price: "Rs. " + item.discountPrice,
         size: stockItem.size,
         quantity: stockItem.quantity,
         sold: item?.sold_out,
