@@ -272,6 +272,12 @@ console.log("cartjj",cart)
     (acc, item) => acc + item.qty * item.discountPrice,
     0
   );
+  const handleCloseClick = (event) => {
+    // Check if the click target is the overlay (wishlistRef) itself
+    if (cartRef.current === event.target) {
+      setOpenCart(false);
+    }
+  };
 
    const addToCartHandler = async (id, selectedSize, count,data,st) => {
     let p=JSON.stringify(data)
@@ -339,22 +345,15 @@ console.log("cartjj",cart)
      console.log("ffffffff",quantity,data)
     // dispatch(addTocart(updateCartData));
   };
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (cartRef.current && !cartRef.current.contains(event.target)) {
-        setOpenCart(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setOpenCart]);
+ 
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-<div
+<div 
+      ref={cartRef}
+      className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10"
+      onClick={handleCloseClick}
+      >
+        <div
         className="fixed top-0 right-0 h-full w-[80%] 800px:w-[25%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm"
         ref={cartRef}>
         {cart && cart.length === 0 ? (

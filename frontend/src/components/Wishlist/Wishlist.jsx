@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { BsCartPlus } from "react-icons/bs";
 import styles from "../../styles/styles";
@@ -11,22 +11,17 @@ const Wishlist = ({ setOpenWishlist }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
   const wishlistRef = useRef(null);
+  const handleCloseClick = (event) => {
+    // Check if the click target is the overlay (wishlistRef) itself
+    if (wishlistRef.current === event.target) {
+      setOpenWishlist(false);
+    }
+  };
 
   const removeFromWishlistHandler = (data) => {
     dispatch(removeFromWishlist(data));
   };
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wishlistRef.current && !wishlistRef.current.contains(event.target)) {
-        setOpenWishlist(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setOpenWishlist]);
+  
 
   const addToCartHandler = (data) => {
     const newData = {...data, qty:1};
@@ -35,8 +30,12 @@ const Wishlist = ({ setOpenWishlist }) => {
   }
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-<div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm" ref={wishlistRef}>
+<div
+      ref={wishlistRef}
+      className="fixed top-0 left-0 w-full h-screen z-10 flex items-center justify-center bg-[#0000004b]"
+      onClick={handleCloseClick}
+    >
+      <div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm" ref={wishlistRef}>
           {wishlist && wishlist.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">

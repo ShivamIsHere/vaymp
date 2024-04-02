@@ -28,7 +28,8 @@ const ProductCard = ({ data, isEvent }) => {
   //   data?.stock.quantity < 105 && data?.stock.quantity > 0
   //     ? data?.stock.quantity + " items left"
   //     : "";
-
+  const remainingItems =
+ 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data._id)) {
       setClick(true);
